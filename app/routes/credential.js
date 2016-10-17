@@ -2,6 +2,8 @@ var _ = require('lodash');
 var U = require('../common/utils');
 var Credential = require('../models/credential');
 var User = require('../models/user');
+var jwt = require('jsonwebtoken');
+
 
 var credential_api = {};
 credential_api.unsocketed = function(app){
@@ -35,10 +37,9 @@ credential_api.unsocketed = function(app){
 	                user.avatar = req.body.avatar;
 	            }
 	            var new_user = yield User.Create(user);
-
+                var token = jwt.sign(new_user,'secret',{expiresIn: '2 days'});
 	        //    req.session._id = credential.user_id;
-	            res.json({user_id: new_user._id});
-	         	// res.json(new_user);
+	            res.json({token:token});
 	        }
 
    			
@@ -58,7 +59,9 @@ credential_api.unsocketed = function(app){
         //    req.session._id = credential.user_id;
             var fields = 'username'; // need to be the same as /user/get so front end can cache login's result
             var user = yield User.FindById(credential.user_id, fields);
-            res.json(user);
+            var token = jwt.sign(user,'secret',{expiresIn: '2 days'});
+            //    req.session._id = credential.user_id;
+           res.json({token:token});
         });
     });
 

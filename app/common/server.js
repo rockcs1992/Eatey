@@ -7,6 +7,7 @@ var U              = require('./utils');
 var session        = require('express-session');
 var path           = require('path');
 
+
 module.exports = function(){
     mongoose.Promise = require('q').Promise;
     mongoose.connect("mongodb://localhost/eatey", {
@@ -30,6 +31,7 @@ module.exports = function(){
             next();
         }
     });
+
 
     var router = express.Router();
     var routes = 'user credential';
