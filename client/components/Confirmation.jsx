@@ -1,4 +1,5 @@
 import React from 'react';
+import $ from 'jquery';
 
 export default class Confirmation extends React.Component {
     constructor(props) {
@@ -20,7 +21,13 @@ export default class Confirmation extends React.Component {
     }
 
     componentWillUnmount(){
-        alert('sending request!');
+    //    alert('sending request!');
+        $.post('/api/order/request',this.props.formData,function(res){
+            console.log(res);
+        })
+        .fail(function(err){
+            console.log(err);
+        })
     }
 
 	render() {

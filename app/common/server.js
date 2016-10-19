@@ -34,7 +34,7 @@ module.exports = function(){
 
 
     var router = express.Router();
-    var routes = 'user credential';
+    var routes = 'user credential foodrequest';
     routes.split(' ').forEach(function(route) {
         require(path.resolve(__dirname + '/../routes/' + route)).unsocketed(router);
     });

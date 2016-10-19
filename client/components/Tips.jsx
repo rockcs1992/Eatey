@@ -27,7 +27,7 @@ export default class Tips extends React.Component {
 
     handleSubmit(e){
         e.preventDefault();
-        this.props.updateFormData({Tips:this.state.tips});
+        this.props.updateFormData({tips:this.state.tips});
         
     }
 

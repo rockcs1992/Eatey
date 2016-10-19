@@ -39,7 +39,8 @@ credential_api.unsocketed = function(app){
 	            var new_user = yield User.Create(user);
                 var token = jwt.sign(new_user,'secret',{expiresIn: '2 days'});
 	        //    req.session._id = credential.user_id;
-	            res.json({token:token});
+	         //   res.json({token:token});
+	         	 res.json(new_user);
 	        }
 
    			
@@ -47,7 +48,6 @@ credential_api.unsocketed = function(app){
 	});
 
 	app.post('/login', function(req, res) {
-            console.log(req.body);
         res.Async(function *() {
 
             if (!req.Verify('email password')) {
@@ -61,7 +61,8 @@ credential_api.unsocketed = function(app){
             var user = yield User.FindById(credential.user_id, fields);
             var token = jwt.sign(user,'secret',{expiresIn: '2 days'});
             //    req.session._id = credential.user_id;
-           res.json({token:token});
+           res.json(user);
+           //   res.json({token:token});
         });
     });
 

@@ -36,6 +36,17 @@ export default class Loginbox extends React.Component {
             .fail(function(err){
                 console.log(err);
             });
+            // fetch('/api/login', {
+            //     method: 'POST',
+            //     headers: {
+            //       'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify(logindata)
+            // }).then( (res) => {
+            //     console.log(res.json());
+            // }).catch( err => {
+            //     console.log(err);
+            // });
         }
     }
 
