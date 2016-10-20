@@ -20,6 +20,10 @@ export default class Confirmation extends React.Component {
     	this.props.updateFormData(this.props.formData);
     }
 
+    handleReturn(){
+        this.props.returnToLastStep();
+    }
+
     componentWillUnmount(){
     //    alert('sending request!');
         $.post('/api/order/request',this.props.formData,function(res){
@@ -38,6 +42,7 @@ export default class Confirmation extends React.Component {
         			 {formData}
         			<input type='submit'  />
         		</form>
+                 <button onClick={this.handleReturn.bind(this)}>previous</button>
         	   </div>;
     }
 }

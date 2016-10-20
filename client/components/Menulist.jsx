@@ -47,6 +47,10 @@ export default class Menulist extends React.Component {
         }
     }
 
+    handleReturn(){
+        this.props.returnToLastStep();
+    }
+
     render() {
         var errorMessage = this.renderError();
         return <div>
@@ -69,6 +73,7 @@ export default class Menulist extends React.Component {
                     <h2>Total price:{this.state.totalprice}</h2>
                     {errorMessage}
                     <button onClick={this.handleSubmit.bind(this)}>next</button>
+                    <button onClick={this.handleReturn.bind(this)}>previous</button>
         	   </div>;
     }
 }

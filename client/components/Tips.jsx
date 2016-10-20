@@ -18,7 +18,6 @@ export default class Tips extends React.Component {
     handleClick(e){
     	e.preventDefault();
     	this.setState({tips : Number(e.target.value)});
-    	console.log(this.state);
     }
 
     handleChange(e){
@@ -28,7 +27,10 @@ export default class Tips extends React.Component {
     handleSubmit(e){
         e.preventDefault();
         this.props.updateFormData({tips:this.state.tips});
-        
+    }
+
+    handleReturn(){
+        this.props.returnToLastStep();
     }
 
     render() {
@@ -42,6 +44,7 @@ export default class Tips extends React.Component {
         			<input type='text' value={this.state.inputvalue} onChange={this.handleChange.bind(this)} />
         			<h2>Tip Amount : {this.state.tips}</h2>
         			<button onClick={this.handleSubmit.bind(this)}>next</button>
+                    <button onClick={this.handleReturn.bind(this)}>previous</button>
         		</div>;
     }
 }

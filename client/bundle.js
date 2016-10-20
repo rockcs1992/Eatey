@@ -37976,10 +37976,13 @@
 	    }
 	  }, {
 	    key: 'returnToLastStep',
-	    value: function returnToLastStep(key) {
-	      var formData = this.state.formData;
-	      var newformData = delete formdata[key];
-	      this.setState({ formData: newformData, currentStep: this.state.currentStep - 1 });
+	    value: function returnToLastStep() {
+	      // var formData = this.state.formData;
+	      //       for(let i = 0;i<arguments.length;i++){
+	      //           console.log(arguments[i]);
+	      //           delete formData[arguments[i]];
+	      //       }
+	      this.setState({ currentStep: this.state.currentStep - 1 });
 	    }
 	  }, {
 	    key: 'render',
@@ -37989,14 +37992,17 @@
 	          return _react2.default.createElement(_Restaurantlist2.default, { updateFormData: this.updateFormData.bind(this), restaurants: this.state.restaurants });
 	        case 2:
 	          return _react2.default.createElement(_Menulist2.default, { updateFormData: this.updateFormData.bind(this),
-	            menu: this.state.restaurants[this.state.formData.selectedRestaurantId].menu
-	            /*returnToLastStep={this.returnToLastStep.bind(this)}*/ });
+	            menu: this.state.restaurants[this.state.formData.selectedRestaurantId].menu,
+	            returnToLastStep: this.returnToLastStep.bind(this) });
 	        case 3:
-	          return _react2.default.createElement(_DestinationandTime2.default, { updateFormData: this.updateFormData.bind(this) });
+	          return _react2.default.createElement(_DestinationandTime2.default, { updateFormData: this.updateFormData.bind(this),
+	            returnToLastStep: this.returnToLastStep.bind(this) });
 	        case 4:
-	          return _react2.default.createElement(_Tips2.default, { updateFormData: this.updateFormData.bind(this) });
+	          return _react2.default.createElement(_Tips2.default, { updateFormData: this.updateFormData.bind(this),
+	            returnToLastStep: this.returnToLastStep.bind(this) });
 	        case 5:
-	          return _react2.default.createElement(_Confirmation2.default, { formData: this.state.formData, updateFormData: this.updateFormData.bind(this) });
+	          return _react2.default.createElement(_Confirmation2.default, { formData: this.state.formData, updateFormData: this.updateFormData.bind(this),
+	            returnToLastStep: this.returnToLastStep.bind(this) });
 	        case 6:
 	          return _react2.default.createElement(_Success2.default, null);
 	      }
@@ -38051,7 +38057,7 @@
 	    _createClass(Restaurantlist, [{
 	        key: 'handleSelected',
 	        value: function handleSelected(e) {
-	            this.setState({ selected: e.target.value });
+	            this.setState({ selected: Number(e.target.value) });
 	        }
 	    }, {
 	        key: 'handleSubmit',
@@ -38221,6 +38227,11 @@
 	            }
 	        }
 	    }, {
+	        key: "handleReturn",
+	        value: function handleReturn() {
+	            this.props.returnToLastStep();
+	        }
+	    }, {
 	        key: "render",
 	        value: function render() {
 	            var _this2 = this;
@@ -38274,6 +38285,11 @@
 	                    "button",
 	                    { onClick: this.handleSubmit.bind(this) },
 	                    "next"
+	                ),
+	                _react2.default.createElement(
+	                    "button",
+	                    { onClick: this.handleReturn.bind(this) },
+	                    "previous"
 	                )
 	            );
 	        }
@@ -38334,7 +38350,6 @@
 	        value: function handleClick(e) {
 	            e.preventDefault();
 	            this.setState({ tips: Number(e.target.value) });
-	            console.log(this.state);
 	        }
 	    }, {
 	        key: 'handleChange',
@@ -38346,6 +38361,11 @@
 	        value: function handleSubmit(e) {
 	            e.preventDefault();
 	            this.props.updateFormData({ tips: this.state.tips });
+	        }
+	    }, {
+	        key: 'handleReturn',
+	        value: function handleReturn() {
+	            this.props.returnToLastStep();
 	        }
 	    }, {
 	        key: 'render',
@@ -38394,6 +38414,11 @@
 	                    'button',
 	                    { onClick: this.handleSubmit.bind(this) },
 	                    'next'
+	                ),
+	                _react2.default.createElement(
+	                    'button',
+	                    { onClick: this.handleReturn.bind(this) },
+	                    'previous'
 	                )
 	            );
 	        }
@@ -38455,6 +38480,11 @@
 	            var newState = this.state;
 	            newState[item] = event.target.value;
 	            this.setState(newState);
+	        }
+	    }, {
+	        key: 'handleReturn',
+	        value: function handleReturn() {
+	            this.props.returnToLastStep();
 	        }
 	    }, {
 	        key: 'renderError',
@@ -38526,6 +38556,11 @@
 	                    'button',
 	                    { onClick: this.handleSubmit.bind(this) },
 	                    'next'
+	                ),
+	                _react2.default.createElement(
+	                    'button',
+	                    { onClick: this.handleReturn.bind(this) },
+	                    'previous'
 	                )
 	            );
 	        }
@@ -38598,6 +38633,11 @@
 	            this.props.updateFormData(this.props.formData);
 	        }
 	    }, {
+	        key: 'handleReturn',
+	        value: function handleReturn() {
+	            this.props.returnToLastStep();
+	        }
+	    }, {
 	        key: 'componentWillUnmount',
 	        value: function componentWillUnmount() {
 	            //    alert('sending request!');
@@ -38624,6 +38664,11 @@
 	                    { onSubmit: this.handleSubmit.bind(this) },
 	                    formData,
 	                    _react2.default.createElement('input', { type: 'submit' })
+	                ),
+	                _react2.default.createElement(
+	                    'button',
+	                    { onClick: this.handleReturn.bind(this) },
+	                    'previous'
 	                )
 	            );
 	        }

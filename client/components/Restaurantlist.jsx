@@ -11,7 +11,7 @@ export default class Restaurantlist extends React.Component {
     }
 
     handleSelected(e){
-    	this.setState({selected : e.target.value});
+    	this.setState({selected : Number(e.target.value)});
     }
 
     handleSubmit(e){

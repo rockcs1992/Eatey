@@ -18,6 +18,10 @@ export default class DestinationandTime extends React.Component {
         this.setState(newState);
     }
 
+    handleReturn(){
+        this.props.returnToLastStep();
+    }
+
     renderError() {
         if(this.state.error) {
             return <div>
@@ -60,6 +64,7 @@ export default class DestinationandTime extends React.Component {
                                     /></span>
                 {errorMessage}
                 <button onClick={this.handleSubmit.bind(this)}>next</button>
+                <button onClick={this.handleReturn.bind(this)}>previous</button>
         		</div>;
     }
 }
