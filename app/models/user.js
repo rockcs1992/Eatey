@@ -22,7 +22,8 @@ var userSchema = new mongoose.Schema({
     avatar : String,
     username : String,
     password : String,
-    aveRating : Number
+    aveRating : Number,
+    token : String
 });
 
 var model = mongoose.model('user', userSchema, 'user');

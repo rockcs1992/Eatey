@@ -5,6 +5,7 @@ import Tips from './Tips.jsx';
 import DestinationandTime from './DestinationandTime.jsx';
 import Confirmation from './Confirmation.jsx';
 import Success from './Success.jsx';
+import { Link } from 'react-router';
 
 export default class Eatview extends React.Component {
 	constructor(){
@@ -94,19 +95,26 @@ export default class Eatview extends React.Component {
     }
     
     render() {
-        switch(this.state.currentStep){
-        	case 1 : return <Restaurantlist updateFormData={this.updateFormData.bind(this)} restaurants={this.state.restaurants} /> ;
-        	case 2 : return <Menulist updateFormData={this.updateFormData.bind(this)} 
-        							menu={this.state.restaurants[this.state.formData.selectedRestaurantId].menu}
-        							returnToLastStep={this.returnToLastStep.bind(this)} />;
-            case 3 : return <DestinationandTime updateFormData={this.updateFormData.bind(this)} 
+        var title = localStorage.Eatey_username ? <p>Current User : {localStorage.Eatey_username}</p> : <p>Please <Link to='/'>Login!</Link></p>;
+        return <div>
+                {title}
+                
+                { (() => {
+                    switch(this.state.currentStep){
+                    	case 1 : return <Restaurantlist updateFormData={this.updateFormData.bind(this)} restaurants={this.state.restaurants} /> ;
+                    	case 2 : return <Menulist updateFormData={this.updateFormData.bind(this)} 
+                    							menu={this.state.restaurants[this.state.formData.selectedRestaurantId].menu}
+                    							returnToLastStep={this.returnToLastStep.bind(this)} />;
+                        case 3 : return <DestinationandTime updateFormData={this.updateFormData.bind(this)} 
+                                                            returnToLastStep={this.returnToLastStep.bind(this)} />;
+                        case 4 : return <Tips updateFormData={this.updateFormData.bind(this)} 
                                                 returnToLastStep={this.returnToLastStep.bind(this)} />;
-            case 4 : return <Tips updateFormData={this.updateFormData.bind(this)} 
-                                    returnToLastStep={this.returnToLastStep.bind(this)} />;
-            case 5 : return <Confirmation formData={this.state.formData} updateFormData={this.updateFormData.bind(this)} 
-                                            returnToLastStep={this.returnToLastStep.bind(this)} />;
-            case 6 : return <Success />
-        }
+                        case 5 : return <Confirmation formData={this.state.formData} updateFormData={this.updateFormData.bind(this)} 
+                                                        returnToLastStep={this.returnToLastStep.bind(this)} />;
+                        case 6 : return <Success />
+                    }
+                })()}
+            </div>
     }
 }
 

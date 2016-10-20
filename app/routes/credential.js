@@ -36,11 +36,14 @@ credential_api.unsocketed = function(app){
 	            if (!_.isUndefined(req.body.avatar)) {
 	                user.avatar = req.body.avatar;
 	            }
+                user.token = jwt.sign(user,String(credential.email),{expiresIn: '30 days'});
 	            var new_user = yield User.Create(user);
-                var token = jwt.sign(new_user,'secret',{expiresIn: '2 days'});
+             
+            //    var token = jwt.sign(new_user,String(new_user._id),{expiresIn: '2 days'});
 	        //    req.session._id = credential.user_id;
 	         //   res.json({token:token});
-	         	 res.json(new_user);
+             //   console.log(token);
+	         	 res.json({token : new_user.token});
 	        }
 
    			
@@ -57,11 +60,11 @@ credential_api.unsocketed = function(app){
             var credential = yield Credential.Login(req.body.email, U.H.salt(req.body.password));
 
         //    req.session._id = credential.user_id;
-            var fields = 'username'; // need to be the same as /user/get so front end can cache login's result
+            var fields = 'username token'; // need to be the same as /user/get so front end can cache login's result
             var user = yield User.FindById(credential.user_id, fields);
-            var token = jwt.sign(user,'secret',{expiresIn: '2 days'});
+        //    var token = jwt.sign(user,'secret',{expiresIn: '2 days'});
             //    req.session._id = credential.user_id;
-           res.json(user);
+           res.json({token : user.token,username:user.username});
            //   res.json({token:token});
         });
     });

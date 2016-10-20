@@ -31,6 +31,8 @@ export default class Loginbox extends React.Component {
         if(this.validateInput()) {
             $.post('/api/login',logindata,function(res){
                 console.log(res);
+                localStorage.setItem('Eatey_userToken', res.token);
+                localStorage.setItem('Eatey_username', res.username);
                 browserHistory.push('/more');
             })
             .fail(function(err){

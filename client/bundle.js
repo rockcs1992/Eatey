@@ -21543,6 +21543,8 @@
 	            if (this.validateInput()) {
 	                _jquery2.default.post('/api/login', logindata, function (res) {
 	                    console.log(res);
+	                    localStorage.setItem('Eatey_userToken', res.token);
+	                    localStorage.setItem('Eatey_username', res.username);
 	                    _reactRouter.browserHistory.push('/more');
 	                }).fail(function (err) {
 	                    console.log(err);
@@ -37865,7 +37867,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -37898,6 +37900,8 @@
 
 	var _Success2 = _interopRequireDefault(_Success);
 
+	var _reactRouter = __webpack_require__(174);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -37907,109 +37911,133 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var Eatview = function (_React$Component) {
-	  _inherits(Eatview, _React$Component);
+	    _inherits(Eatview, _React$Component);
 
-	  function Eatview() {
-	    _classCallCheck(this, Eatview);
+	    function Eatview() {
+	        _classCallCheck(this, Eatview);
 
-	    var _this = _possibleConstructorReturn(this, (Eatview.__proto__ || Object.getPrototypeOf(Eatview)).call(this));
+	        var _this = _possibleConstructorReturn(this, (Eatview.__proto__ || Object.getPrototypeOf(Eatview)).call(this));
 
-	    _this.state = {
-	      currentStep: 1,
-	      formData: {},
-	      restaurants: [{
-	        id: 0,
-	        name: 'TACO_BELL',
-	        menu: [{
-	          item: 'steak taco',
-	          unitprice: 2
-	        }, {
-	          item: 'rice_taco',
-	          unitprice: 1.5
-	        }]
-	      }, {
-	        id: 1,
-	        name: 'PANDA',
-	        menu: [{
-	          item: 'orange chicken',
-	          unitprice: 5
-	        }, {
-	          item: 'pepper chicken',
-	          unitprice: 5
-	        }]
-	      }, {
-	        id: 2,
-	        name: 'SUBWAY',
-	        menu: [{
-	          item: '6-inch sandwitch',
-	          unitprice: 5
-	        }, {
-	          item: 'footlong sandwitch',
-	          unitprice: 8
-	        }]
-	      }, {
-	        id: 3,
-	        name: 'CHICK_FIL_A',
-	        menu: [{
-	          item: 'chick-fil-a sandwitch',
-	          unitprice: 3
-	        }, {
-	          item: 'spicy chicken sandwitch',
-	          unitprice: 3.5
-	        }]
-	      }]
-	    };
-	    return _this;
-	  }
-
-	  // componentWillMount(){
-	  // 	//get restaurant menus here
-	  // }
-
-	  _createClass(Eatview, [{
-	    key: 'updateFormData',
-	    value: function updateFormData(data) {
-	      var formData = this.state.formData;
-	      var newformData = Object.assign({}, formData, data);
-	      this.setState({ formData: newformData, currentStep: this.state.currentStep + 1 });
-	      console.log(this.state.formData);
+	        _this.state = {
+	            currentStep: 1,
+	            formData: {},
+	            restaurants: [{
+	                id: 0,
+	                name: 'TACO_BELL',
+	                menu: [{
+	                    item: 'steak taco',
+	                    unitprice: 2
+	                }, {
+	                    item: 'rice_taco',
+	                    unitprice: 1.5
+	                }]
+	            }, {
+	                id: 1,
+	                name: 'PANDA',
+	                menu: [{
+	                    item: 'orange chicken',
+	                    unitprice: 5
+	                }, {
+	                    item: 'pepper chicken',
+	                    unitprice: 5
+	                }]
+	            }, {
+	                id: 2,
+	                name: 'SUBWAY',
+	                menu: [{
+	                    item: '6-inch sandwitch',
+	                    unitprice: 5
+	                }, {
+	                    item: 'footlong sandwitch',
+	                    unitprice: 8
+	                }]
+	            }, {
+	                id: 3,
+	                name: 'CHICK_FIL_A',
+	                menu: [{
+	                    item: 'chick-fil-a sandwitch',
+	                    unitprice: 3
+	                }, {
+	                    item: 'spicy chicken sandwitch',
+	                    unitprice: 3.5
+	                }]
+	            }]
+	        };
+	        return _this;
 	    }
-	  }, {
-	    key: 'returnToLastStep',
-	    value: function returnToLastStep() {
-	      // var formData = this.state.formData;
-	      //       for(let i = 0;i<arguments.length;i++){
-	      //           console.log(arguments[i]);
-	      //           delete formData[arguments[i]];
-	      //       }
-	      this.setState({ currentStep: this.state.currentStep - 1 });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      switch (this.state.currentStep) {
-	        case 1:
-	          return _react2.default.createElement(_Restaurantlist2.default, { updateFormData: this.updateFormData.bind(this), restaurants: this.state.restaurants });
-	        case 2:
-	          return _react2.default.createElement(_Menulist2.default, { updateFormData: this.updateFormData.bind(this),
-	            menu: this.state.restaurants[this.state.formData.selectedRestaurantId].menu,
-	            returnToLastStep: this.returnToLastStep.bind(this) });
-	        case 3:
-	          return _react2.default.createElement(_DestinationandTime2.default, { updateFormData: this.updateFormData.bind(this),
-	            returnToLastStep: this.returnToLastStep.bind(this) });
-	        case 4:
-	          return _react2.default.createElement(_Tips2.default, { updateFormData: this.updateFormData.bind(this),
-	            returnToLastStep: this.returnToLastStep.bind(this) });
-	        case 5:
-	          return _react2.default.createElement(_Confirmation2.default, { formData: this.state.formData, updateFormData: this.updateFormData.bind(this),
-	            returnToLastStep: this.returnToLastStep.bind(this) });
-	        case 6:
-	          return _react2.default.createElement(_Success2.default, null);
-	      }
-	    }
-	  }]);
 
-	  return Eatview;
+	    // componentWillMount(){
+	    // 	//get restaurant menus here
+	    // }
+
+	    _createClass(Eatview, [{
+	        key: 'updateFormData',
+	        value: function updateFormData(data) {
+	            var formData = this.state.formData;
+	            var newformData = Object.assign({}, formData, data);
+	            this.setState({ formData: newformData, currentStep: this.state.currentStep + 1 });
+	            console.log(this.state.formData);
+	        }
+	    }, {
+	        key: 'returnToLastStep',
+	        value: function returnToLastStep() {
+	            // var formData = this.state.formData;
+	            //       for(let i = 0;i<arguments.length;i++){
+	            //           console.log(arguments[i]);
+	            //           delete formData[arguments[i]];
+	            //       }
+	            this.setState({ currentStep: this.state.currentStep - 1 });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            var title = localStorage.Eatey_username ? _react2.default.createElement(
+	                'p',
+	                null,
+	                'Current User : ',
+	                localStorage.Eatey_username
+	            ) : _react2.default.createElement(
+	                'p',
+	                null,
+	                'Please ',
+	                _react2.default.createElement(
+	                    _reactRouter.Link,
+	                    { to: '/' },
+	                    'Login!'
+	                )
+	            );
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                title,
+	                function () {
+	                    switch (_this2.state.currentStep) {
+	                        case 1:
+	                            return _react2.default.createElement(_Restaurantlist2.default, { updateFormData: _this2.updateFormData.bind(_this2), restaurants: _this2.state.restaurants });
+	                        case 2:
+	                            return _react2.default.createElement(_Menulist2.default, { updateFormData: _this2.updateFormData.bind(_this2),
+	                                menu: _this2.state.restaurants[_this2.state.formData.selectedRestaurantId].menu,
+	                                returnToLastStep: _this2.returnToLastStep.bind(_this2) });
+	                        case 3:
+	                            return _react2.default.createElement(_DestinationandTime2.default, { updateFormData: _this2.updateFormData.bind(_this2),
+	                                returnToLastStep: _this2.returnToLastStep.bind(_this2) });
+	                        case 4:
+	                            return _react2.default.createElement(_Tips2.default, { updateFormData: _this2.updateFormData.bind(_this2),
+	                                returnToLastStep: _this2.returnToLastStep.bind(_this2) });
+	                        case 5:
+	                            return _react2.default.createElement(_Confirmation2.default, { formData: _this2.state.formData, updateFormData: _this2.updateFormData.bind(_this2),
+	                                returnToLastStep: _this2.returnToLastStep.bind(_this2) });
+	                        case 6:
+	                            return _react2.default.createElement(_Success2.default, null);
+	                    }
+	                }()
+	            );
+	        }
+	    }]);
+
+	    return Eatview;
 	}(_react2.default.Component);
 
 	exports.default = Eatview;
