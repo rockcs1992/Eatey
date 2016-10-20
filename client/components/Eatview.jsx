@@ -11,6 +11,7 @@ export default class Eatview extends React.Component {
 	constructor(){
 		super();
 		this.state = {
+            currentUser : localStorage.Eatey_username,
 			currentStep : 1,
 			formData : {},
 			restaurants : [
@@ -93,12 +94,22 @@ export default class Eatview extends React.Component {
   //       }
 		this.setState({currentStep : this.state.currentStep-1});
     }
+
+    signOut(){
+        localStorage.removeItem('Eatey_username');
+        localStorage.removeItem('Eatey_userToken');
+        this.setState({currentUser : ''});
+    }
     
     render() {
-        var title = localStorage.Eatey_username ? <p>Current User : {localStorage.Eatey_username}</p> : <p>Please <Link to='/'>Login!</Link></p>;
+        var title = this.state.currentUser  ? 
+                    <div>
+                        <p>Current User : {this.state.currentUser}</p>
+                        <button onClick={this.signOut.bind(this)}>SignOut!</button>
+                    </div>
+                    : <p>Please <Link to='/'>Login!</Link></p>;
         return <div>
                 {title}
-                
                 { (() => {
                     switch(this.state.currentStep){
                     	case 1 : return <Restaurantlist updateFormData={this.updateFormData.bind(this)} restaurants={this.state.restaurants} /> ;

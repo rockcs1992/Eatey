@@ -37919,6 +37919,7 @@
 	        var _this = _possibleConstructorReturn(this, (Eatview.__proto__ || Object.getPrototypeOf(Eatview)).call(this));
 
 	        _this.state = {
+	            currentUser: localStorage.Eatey_username,
 	            currentStep: 1,
 	            formData: {},
 	            restaurants: [{
@@ -37989,15 +37990,31 @@
 	            this.setState({ currentStep: this.state.currentStep - 1 });
 	        }
 	    }, {
+	        key: 'signOut',
+	        value: function signOut() {
+	            localStorage.removeItem('Eatey_username');
+	            localStorage.removeItem('Eatey_userToken');
+	            this.setState({ currentUser: '' });
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var _this2 = this;
 
-	            var title = localStorage.Eatey_username ? _react2.default.createElement(
-	                'p',
+	            var title = this.state.currentUser ? _react2.default.createElement(
+	                'div',
 	                null,
-	                'Current User : ',
-	                localStorage.Eatey_username
+	                _react2.default.createElement(
+	                    'p',
+	                    null,
+	                    'Current User : ',
+	                    this.state.currentUser
+	                ),
+	                _react2.default.createElement(
+	                    'button',
+	                    { onClick: this.signOut.bind(this) },
+	                    'SignOut!'
+	                )
 	            ) : _react2.default.createElement(
 	                'p',
 	                null,
@@ -38635,7 +38652,10 @@
 
 	        var _this = _possibleConstructorReturn(this, (Confirmation.__proto__ || Object.getPrototypeOf(Confirmation)).call(this, props));
 
-	        _this.displayName = 'Confirmation';
+	        _this.state = {
+	            userToken: localStorage.Eatey_userToken
+	        };
+
 	        return _this;
 	    }
 
@@ -38658,7 +38678,11 @@
 	        key: 'handleSubmit',
 	        value: function handleSubmit(e) {
 	            e.preventDefault();
-	            this.props.updateFormData(this.props.formData);
+	            if (!this.state.userToken) {
+	                alert('Please Login Before Sending Food Request!');
+	            } else {
+	                this.props.updateFormData(this.props.formData);
+	            }
 	        }
 	    }, {
 	        key: 'handleReturn',
@@ -38669,6 +38693,7 @@
 	        key: 'componentWillUnmount',
 	        value: function componentWillUnmount() {
 	            //    alert('sending request!');
+	            //    var data = Object.assign(this.props.formData,{token : this.state.userToken});
 	            _jquery2.default.post('/api/order/request', this.props.formData, function (res) {
 	                console.log(res);
 	            }).fail(function (err) {

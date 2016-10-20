@@ -4,7 +4,10 @@ import $ from 'jquery';
 export default class Confirmation extends React.Component {
     constructor(props) {
         super(props);
-        this.displayName = 'Confirmation';
+        this.state = {
+            userToken : localStorage.Eatey_userToken
+        };
+
     }
 
     showFinalForm(form) {
@@ -17,7 +20,14 @@ export default class Confirmation extends React.Component {
 
     handleSubmit(e){
     	e.preventDefault();
-    	this.props.updateFormData(this.props.formData);
+        if(!this.state.userToken){
+            alert('Please Login Before Sending Food Request!');
+        }
+        else{
+            this.props.updateFormData(this.props.formData);
+        }
+    	
+
     }
 
     handleReturn(){
@@ -26,6 +36,7 @@ export default class Confirmation extends React.Component {
 
     componentWillUnmount(){
     //    alert('sending request!');
+    //    var data = Object.assign(this.props.formData,{token : this.state.userToken});
         $.post('/api/order/request',this.props.formData,function(res){
             console.log(res);
         })
