@@ -74,7 +74,7 @@
 
 	var _Deliverview2 = _interopRequireDefault(_Deliverview);
 
-	var _Moreview = __webpack_require__(249);
+	var _Moreview = __webpack_require__(250);
 
 	var _Moreview2 = _interopRequireDefault(_Moreview);
 
@@ -38806,6 +38806,14 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _jquery = __webpack_require__(237);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _Orderitem = __webpack_require__(249);
+
+	var _Orderitem2 = _interopRequireDefault(_Orderitem);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -38817,19 +38825,91 @@
 	var Deliverview = function (_React$Component) {
 	    _inherits(Deliverview, _React$Component);
 
-	    function Deliverview() {
+	    function Deliverview(props) {
 	        _classCallCheck(this, Deliverview);
 
-	        return _possibleConstructorReturn(this, (Deliverview.__proto__ || Object.getPrototypeOf(Deliverview)).apply(this, arguments));
+	        var _this = _possibleConstructorReturn(this, (Deliverview.__proto__ || Object.getPrototypeOf(Deliverview)).call(this, props));
+
+	        _this.orders = [];
+	        _this.state = {
+	            orderLoaded: false
+	        };
+	        return _this;
 	    }
 
 	    _createClass(Deliverview, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            var self = this;
+	            _jquery2.default.get('api/order/get').then(function (res) {
+	                self.orders = res;
+	                self.setState({ orderLoaded: true });
+	            });
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
 	                'div',
 	                null,
-	                'Deliverview here!'
+	                _react2.default.createElement(
+	                    'h3',
+	                    null,
+	                    'All the orders available now : '
+	                ),
+	                this.state.orderLoaded ? _react2.default.createElement(
+	                    'table',
+	                    null,
+	                    _react2.default.createElement(
+	                        'thead',
+	                        null,
+	                        _react2.default.createElement(
+	                            'tr',
+	                            null,
+	                            _react2.default.createElement(
+	                                'th',
+	                                null,
+	                                'Restaurant'
+	                            ),
+	                            _react2.default.createElement(
+	                                'th',
+	                                null,
+	                                'SelectedFood'
+	                            ),
+	                            _react2.default.createElement(
+	                                'th',
+	                                null,
+	                                'Destination'
+	                            ),
+	                            _react2.default.createElement(
+	                                'th',
+	                                null,
+	                                'WaitingDuration'
+	                            ),
+	                            _react2.default.createElement(
+	                                'th',
+	                                null,
+	                                'Total Price'
+	                            ),
+	                            _react2.default.createElement(
+	                                'th',
+	                                null,
+	                                'Tips'
+	                            )
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'tbody',
+	                        null,
+	                        this.orders.map(function (order, index) {
+	                            return _react2.default.createElement(_Orderitem2.default, { order: order, key: index });
+	                        })
+	                    )
+	                ) : _react2.default.createElement(
+	                    'p',
+	                    null,
+	                    'Loading........'
+	                )
 	            );
 	        }
 	    }]);
@@ -38841,6 +38921,85 @@
 
 /***/ },
 /* 249 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Orderitem = function (_React$Component) {
+	    _inherits(Orderitem, _React$Component);
+
+	    function Orderitem(props) {
+	        _classCallCheck(this, Orderitem);
+
+	        return _possibleConstructorReturn(this, (Orderitem.__proto__ || Object.getPrototypeOf(Orderitem)).call(this, props));
+	    }
+
+	    _createClass(Orderitem, [{
+	        key: 'render',
+	        value: function render() {
+	            var order = this.props.order;
+	            return _react2.default.createElement(
+	                'tr',
+	                null,
+	                _react2.default.createElement(
+	                    'td',
+	                    null,
+	                    order.restaurant
+	                ),
+	                _react2.default.createElement(
+	                    'td',
+	                    null,
+	                    order.selectedFood
+	                ),
+	                _react2.default.createElement(
+	                    'td',
+	                    null,
+	                    order.destination
+	                ),
+	                _react2.default.createElement(
+	                    'td',
+	                    null,
+	                    order.waitingDuration
+	                ),
+	                _react2.default.createElement(
+	                    'td',
+	                    null,
+	                    order.totalPrice
+	                ),
+	                _react2.default.createElement(
+	                    'td',
+	                    null,
+	                    order.tips
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Orderitem;
+	}(_react2.default.Component);
+
+	exports.default = Orderitem;
+
+/***/ },
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

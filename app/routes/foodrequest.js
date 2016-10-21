@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var foodRequest = require('../models/foodrequest');
+var FoodRequest = require('../models/foodrequest');
 var U = require('../common/utils');
 
 var foodRequest_api = {};
@@ -21,6 +21,13 @@ foodRequest_api.unsocketed = function(app) {
 
             var new_order = yield foodRequest.Create(order);
          	res.json(new_order);
+        });
+    }); 
+
+    app.get('/order/get', function(req, res) {
+        res.Async(function *() {
+            var orders = yield FoodRequest.Find();
+            res.json(orders);
         });
     }); 
 };
