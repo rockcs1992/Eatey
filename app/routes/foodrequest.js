@@ -1,13 +1,13 @@
 var _ = require('lodash');
 var FoodRequest = require('../models/foodrequest');
 var U = require('../common/utils');
+var requestCache = [];
 
 var foodRequest_api = {};
 foodRequest_api.unsocketed = function(app) {
     app.post('/order/request', function(req, res) {
         res.Async(function *() {
-        	console.log(req.body);
-        	if (!req.Verify('selectedRestaurantId selectedFood destination waitingDuration tips')) {
+        	if (!req.Verify('selectedRestaurantId selectedFood destination totalPrice waitingDuration tips')) {
                 req.BadRequest('Bad order request');
             }
 
@@ -19,19 +19,31 @@ foodRequest_api.unsocketed = function(app) {
             order.waitingDuration = req.body.waitingDuration;
             order.tips = req.body.tips;
 
-            var new_order = yield foodRequest.Create(order);
+            var new_order = yield FoodRequest.Create(order);
+            requestCache.push(new_order);
+        //    setTimeout(removeSelf.bind(new_order),Number(new_order.waitingDuration)* 1000);
          	res.json(new_order);
         });
     }); 
 
     app.get('/order/get', function(req, res) {
-        res.Async(function *() {
-            var orders = yield FoodRequest.Find();
-            res.json(orders);
-        });
+        // res.Async(function *() {
+        //     // var orders = yield FoodRequest.Find();
+        //     res.json(orders);
+        // });
+        res.json(requestCache);
     }); 
 };
 
-// user_api.socketed = function(app, socket) {};
+function removeSelf(){
+    //TODO : Use either hashmap or binary search for searching expired request
+    for(let i = 0;i<requestCache.length;i++){
+        if(requestCache[i]._id.toString() === this._id.toString()){
+            requestCache.splice(i,1);
+            break;
+        }
+    }
+    FoodRequest.Delete({_id:this._id});
+}
 
 module.exports = foodRequest_api;
