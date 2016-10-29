@@ -1,22 +1,33 @@
 import React from 'react';
-import $ from 'jquery';
+import axios from 'axios';
 import Orderitem from './Orderitem.jsx';
 
 export default class Deliverview extends React.Component {
     constructor(props) {
         super(props);
-        this.orders = [];
         this.state = {
-        	orderLoaded : false
+        	orderLoaded : false,
+            orders : null
         };
     }
     componentWillMount(){
     	var self = this;
-    	$.get('api/order/get')
+    	axios.get('api/order/get')
     	.then(function(res){
-    		self.orders = res;
-			self.setState({orderLoaded: true});
+			self.setState({orderLoaded: true,orders : res.data});
     	});
+    }
+
+    componentDidMount(){
+        setInterval(this.getOrders.bind(this),5000);
+    }
+
+    getOrders(){
+        var self = this;
+        axios.get('api/order/get')
+        .then(function(res){
+            self.setState({orders : res.data});
+        });
     }
     render() {
         return <div>
@@ -36,7 +47,7 @@ export default class Deliverview extends React.Component {
 	        			</thead>
         				<tbody>
 	        			{
-	        				this.orders.map( (order,index) => {
+	        				this.state.orders.map( (order,index) => {
 	        					return <Orderitem order={order} key={index} />
 	        				})
 	        			} 

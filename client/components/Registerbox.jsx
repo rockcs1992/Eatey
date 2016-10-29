@@ -1,7 +1,7 @@
 import React from 'react';
 import Inputfield from './Inputfield.jsx';
 import { Link } from 'react-router';
-import $ from 'jquery';
+import axios from 'axios';
 import { browserHistory } from 'react-router';
 
 export default class Registerbox extends React.Component {
@@ -35,11 +35,12 @@ export default class Registerbox extends React.Component {
           password : this.state.password
         };
         if(this.validateInput()) {
-            $.post('/api/register',registerdata,function(res){
-                console.log(res);
+            $.post('/api/register',registerdata)
+            .then(function(res){
+                console.log(res.data);
                 browserHistory.push('/more');
             })
-            .fail(function(res){
+            .catch(function(res){
                 alert("User Already Exists!");
             });
         }

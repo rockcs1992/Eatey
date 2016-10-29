@@ -1,7 +1,7 @@
 import React from 'react';
 import Inputfield from './Inputfield.jsx';
 import { Link } from 'react-router';
-import $ from 'jquery';
+import axios from 'axios';
 import { browserHistory } from 'react-router';
 
 export default class Loginbox extends React.Component {
@@ -29,13 +29,13 @@ export default class Loginbox extends React.Component {
           password:this.state.password
         };
         if(this.validateInput()) {
-            $.post('/api/login',logindata,function(res){
-                console.log(res);
+            axios.post('/api/login',logindata)
+            .then(function(res){
                 localStorage.setItem('Eatey_userToken', res.token);
                 localStorage.setItem('Eatey_username', res.username);
                 browserHistory.push('/more');
             })
-            .fail(function(err){
+            .catch(function(err){
                 console.log(err);
             });
             // fetch('/api/login', {

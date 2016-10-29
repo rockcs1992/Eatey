@@ -21,7 +21,7 @@ foodRequest_api.unsocketed = function(app) {
 
             var new_order = yield FoodRequest.Create(order);
             requestCache.push(new_order);
-        //    setTimeout(removeSelf.bind(new_order),Number(new_order.waitingDuration)* 1000);
+            setTimeout(removeSelf.bind(new_order),Number(new_order.waitingDuration)* 1000);
          	res.json(new_order);
         });
     }); 

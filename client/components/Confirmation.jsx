@@ -1,5 +1,5 @@
 import React from 'react';
-import $ from 'jquery';
+import axios from 'axios';
 
 export default class Confirmation extends React.Component {
     constructor(props) {
@@ -37,10 +37,11 @@ export default class Confirmation extends React.Component {
     componentWillUnmount(){
     //    alert('sending request!');
     //    var data = Object.assign(this.props.formData,{token : this.state.userToken});
-        $.post('/api/order/request',this.props.formData,function(res){
-            console.log(res);
+        axios.post('/api/order/request',this.props.formData)
+        .then(function(res){
+            console.log(res.data);
         })
-        .fail(function(err){
+        .catch(function(err){
             console.log(err);
         })
     }

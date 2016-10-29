@@ -49,7 +49,7 @@ express.request.Verify = function(required_params) {
     required_params = required_params.split(' ');
     for (var i=0; i<required_params.length; i++) {
         var param = required_params[i];
-        if (!query[param]) {
+        if (query[param] === null) {
             return false;
         }
     }
