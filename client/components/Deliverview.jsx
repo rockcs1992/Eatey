@@ -19,7 +19,11 @@ export default class Deliverview extends React.Component {
     }
 
     componentDidMount(){
-        setInterval(this.getOrders.bind(this),5000);
+        this.refresh = setInterval(this.getOrders.bind(this),5000);
+    }
+
+    componentWillUnmount(){
+        clearInterval(this.refresh);
     }
 
     getOrders(){
