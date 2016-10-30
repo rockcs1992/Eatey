@@ -18,10 +18,11 @@ foodRequest_api.unsocketed = function(app) {
             order.destination = req.body.destination;
             order.waitingDuration = req.body.waitingDuration;
             order.tips = req.body.tips;
+            order.expired = false;
 
             var new_order = yield FoodRequest.Create(order);
             requestCache.push(new_order);
-            setTimeout(removeSelf.bind(new_order),Number(new_order.waitingDuration)* 1000);
+            setTimeout(setExpire.bind(new_order),Number(new_order.waitingDuration)* 1000);
          	res.json(new_order);
         });
     }); 
@@ -35,7 +36,7 @@ foodRequest_api.unsocketed = function(app) {
     }); 
 };
 
-function removeSelf(){
+function setExpire(){
     //TODO : Use either hashmap or binary search for searching expired request
     for(let i = 0;i<requestCache.length;i++){
         if(requestCache[i]._id.toString() === this._id.toString()){
@@ -43,7 +44,7 @@ function removeSelf(){
             break;
         }
     }
-    FoodRequest.Delete({_id:this._id});
+    FoodRequest.Update({_id:this._id},{expired : true});
 }
 
 module.exports = foodRequest_api;

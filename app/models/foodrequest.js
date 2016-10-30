@@ -10,6 +10,7 @@ var orderSchema = new mongoose.Schema({
 	tips : Number,
 //	startTime : Date.now(),
 	orderer : String,
+	expired : Boolean,
 	completed : Boolean
 	
 	// orderType : String,    //   deliver/eat
