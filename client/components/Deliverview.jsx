@@ -12,10 +12,13 @@ export default class Deliverview extends React.Component {
     }
     componentWillMount(){
     	var self = this;
-    	axios.get('api/order/get')
-    	.then(function(res){
-			self.setState({orderLoaded: true,orders : res.data});
-    	});
+        if(localStorage.Eatey_userToken){
+            axios.defaults.headers.common.Authorization = localStorage.Eatey_userToken;
+            axios.get('api/order/get')
+            .then(function(res){
+                self.setState({orderLoaded: true,orders : res.data});
+            });
+        }	
     }
 
     componentDidMount(){
@@ -28,10 +31,12 @@ export default class Deliverview extends React.Component {
 
     getOrders(){
         var self = this;
-        axios.get('api/order/get')
-        .then(function(res){
-            self.setState({orders : res.data});
-        });
+        if(localStorage.Eatey_userToken){
+            axios.get('api/order/get')
+            .then(function(res){
+                self.setState({orders : res.data});
+            });
+        }
     }
     render() {
         return <div>

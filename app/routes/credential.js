@@ -14,7 +14,7 @@ credential_api.unsocketed = function(app){
             }
 
             var credential = {};
-            credential.email = req.body.email;
+            credential.email = req.body.email.trim();
             credential.username = req.body.username;
             credential.fullname = req.body.firstname + ' ' + req.body.lastname;
             credential.password_salted = U.H.salt(req.body.password);
@@ -36,7 +36,7 @@ credential_api.unsocketed = function(app){
 	            if (!_.isUndefined(req.body.avatar)) {
 	                user.avatar = req.body.avatar;
 	            }
-                user.token = jwt.sign(user,String(credential.email),{expiresIn: '30 days'});
+                user.token = jwt.sign({username:user.username,_id:user._id},'secret',{expiresIn: '30 days'});
 	            var new_user = yield User.Create(user);
              
             //    var token = jwt.sign(new_user,String(new_user._id),{expiresIn: '2 days'});
@@ -57,21 +57,29 @@ credential_api.unsocketed = function(app){
                 req.BadRequest('login attempt');
             }
 
-            var credential = yield Credential.Login(req.body.email, U.H.salt(req.body.password));
+            var credential = yield Credential.Login(req.body.email.trim(), U.H.salt(req.body.password));
 
-        //    req.session._id = credential.user_id;
+        
             var fields = 'username token'; // need to be the same as /user/get so front end can cache login's result
             var user = yield User.FindById(credential.user_id, fields);
-        //    var token = jwt.sign(user,'secret',{expiresIn: '2 days'});
-            //    req.session._id = credential.user_id;
+            user.token = jwt.sign({username:user.username,_id:user._id},'secret',{expiresIn: '30 days'});
            res.json({token : user.token,username:user.username});
            //   res.json({token:token});
         });
     });
 
-    app.post('/logout', function(req, res){
-        delete req.session._id;
-        res.json(U.C.LOG_OUT);
+    app.post('/logintest', function(req, res) {
+        res.Async(function *() {
+            try {
+                var decoded = jwt.verify(req.headers.authorization, 'secret');
+            }catch(err) {
+               res.status(401).json({m: U.C.UNAUTHORIZED});
+            }
+            var user = yield User.FindById(decoded._id,'username');
+
+            
+            res.json(user);
+        });
     });
 };
 

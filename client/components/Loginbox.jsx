@@ -31,24 +31,13 @@ export default class Loginbox extends React.Component {
         if(this.validateInput()) {
             axios.post('/api/login',logindata)
             .then(function(res){
-                localStorage.setItem('Eatey_userToken', res.token);
-                localStorage.setItem('Eatey_username', res.username);
+                localStorage.setItem('Eatey_userToken', res.data.token);
+                localStorage.setItem('Eatey_username', res.data.username);
                 browserHistory.push('/more');
             })
             .catch(function(err){
                 console.log(err);
             });
-            // fetch('/api/login', {
-            //     method: 'POST',
-            //     headers: {
-            //       'Content-Type': 'application/json'
-            //     },
-            //     body: JSON.stringify(logindata)
-            // }).then( (res) => {
-            //     console.log(res.json());
-            // }).catch( err => {
-            //     console.log(err);
-            // });
         }
     }
 

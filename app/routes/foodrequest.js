@@ -2,6 +2,7 @@ var _ = require('lodash');
 var FoodRequest = require('../models/foodrequest');
 var U = require('../common/utils');
 var requestCache = [];
+var jwt = require('jsonwebtoken');
 
 var foodRequest_api = {};
 foodRequest_api.unsocketed = function(app) {
@@ -32,6 +33,12 @@ foodRequest_api.unsocketed = function(app) {
         //     // var orders = yield FoodRequest.Find();
         //     res.json(orders);
         // });
+        console.log(req.headers.authorization);
+        try {
+            jwt.verify(req.headers.authorization, 'secret');
+        }catch(err) {
+           res.status(401).json({m: U.C.UNAUTHORIZED});
+        }
         res.json(requestCache);
     }); 
 };
