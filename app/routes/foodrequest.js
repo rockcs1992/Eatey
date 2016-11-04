@@ -29,11 +29,6 @@ foodRequest_api.unsocketed = function(app) {
     }); 
 
     app.get('/order/get', function(req, res) {
-        // res.Async(function *() {
-        //     // var orders = yield FoodRequest.Find();
-        //     res.json(orders);
-        // });
-        console.log(req.headers.authorization);
         try {
             jwt.verify(req.headers.authorization, 'secret');
         }catch(err) {

@@ -1,5 +1,6 @@
 import React from 'react';
-
+var Lat = 33.775898;
+var Lng = -84.403926;
 export default class GMap extends React.Component {
 	constructor(){
     	super();
@@ -22,13 +23,14 @@ export default class GMap extends React.Component {
 	  ));
 	} 
 
-	watchCurrentPosition() {
-		var self = this;
-	  this.positionTimer = navigator.geolocation.watchPosition(
-	    function (position) {
-	      self.setMarkerPosition(self.currentPositionMarker,position);
-	    });
-	}
+	// watchCurrentPosition() {
+	// 	var self = this;
+	//   this.positionTimer = navigator.geolocation.watchPosition(
+	//     function (position) {
+	//       self.setMarkerPosition(self.currentPositionMarker,position);
+	//       console.log(position);
+	//     });
+	// }
 
 	setMarkerPosition(marker, position) {
 	  marker.setPosition(
@@ -39,8 +41,9 @@ export default class GMap extends React.Component {
 	}
 
     displayAndWatch(position){
+    	console.log(true);
 		this.setCurrentPosition(position);
- 		this.watchCurrentPosition();    
+ 		this.setMarkerPosition(this.currentPositionMarker,position);  
   	}
 
     locError(){
@@ -48,55 +51,45 @@ export default class GMap extends React.Component {
     }
 	componentDidMount(){
 		this.map = new google.maps.Map(this.mapElement, {
-		    zoom: 15,
-		    center: new google.maps.LatLng(33.775898, -84.403926),
+		    zoom: 18,
+		    center: new google.maps.LatLng(Lat, Lng),
 		//    mapTypeId: google.maps.MapTypeId.ROADMAP
 		});
-		if (navigator.geolocation) {
-		    navigator.geolocation.getCurrentPosition(this.displayAndWatch.bind(this),this.locError);
-		  } else {
-		    alert("Your browser does not support the Geolocation API");
-		  }
- //    	var pointA = new google.maps.LatLng(33.775999, -84.405293),
- //        pointB = new google.maps.LatLng(33.777476, -84.396159),
- //        myOptions = {
- //            zoom: 7,
- //            center: pointA
- //        },
- //        map = new google.maps.Map(this.mapElement, myOptions),
- //        directionsService = new google.maps.DirectionsService(),
- //        directionsDisplay = new google.maps.DirectionsRenderer({
- //            map: map
- //        }),
- //        markerA = new google.maps.Marker({
- //            position: pointA,
- //            title: "point A",
- //            label: "A",
- //            map: map
- //        }),
- //        markerB = new google.maps.Marker({
- //            position: pointB,
- //            title: "point B",
- //            label: "B",
- //            map: map
- //        });
- //        this.calculateAndDisplayRoute(directionsService, directionsDisplay, pointA, pointB);
-	// }
+		this.marker = new google.maps.Marker({
+	    map: this.map,
+	    position: new google.maps.LatLng(
+	      Lat,
+	      Lng
+	    ),
+	    icon : 'https://upload.wikimedia.org/wikipedia/commons/thumb/archive/2/2c/20100912230043!Nav-icon-untab.svg/120px-Nav-icon-untab.svg.png'
+	  });
+	  this.map.panTo(new google.maps.LatLng(
+	    Lat,
+	    Lng
+	  ));
+		// if (navigator.geolocation) {
+		//     navigator.geolocation.watchPosition(this.displayAndWatch.bind(this),this.locError,{
+		//     	enableHighAccuracy : true,
+	 //            timeout : 10000,
+	 //            maximumAge : 0
+		//     });
+		//   } else {
+		//     alert("Your browser does not support the Geolocation API");
+		//   }
+		setInterval(this.test.bind(this),100);
+ 
+	 }
 
-	// calculateAndDisplayRoute(directionsService, directionsDisplay, pointA, pointB){
-	// 	directionsService.route({
-	//         origin: pointA,
-	//         destination: pointB,
-	//         avoidTolls: true,
-	//         avoidHighways: false,
-	//         travelMode: google.maps.TravelMode.WALKING
-	//     }, function (response, status) {
-	//         if (status == google.maps.DirectionsStatus.OK) {
-	//             directionsDisplay.setDirections(response);
-	//         } else {
-	//             window.alert('Directions request failed due to ' + status);
-	//         }
-	//     });
+	 test(){
+ 		Lat=Lat+0.000001;
+ 		Lng = Lng-0.000001;
+	  this.marker.setPosition(
+	    new google.maps.LatLng(
+	      Lat,
+	      Lng)
+	  );
+	  
+		
 	 }
 
 	 componentWillUnmount(){

@@ -37,7 +37,8 @@ export default class Registerbox extends React.Component {
         if(this.validateInput()) {
             $.post('/api/register',registerdata)
             .then(function(res){
-                console.log(res.data);
+                localStorage.setItem('Eatey_userToken', res.data.token);
+                localStorage.setItem('Eatey_username', res.data.username);
                 browserHistory.push('/more');
             })
             .catch(function(res){
