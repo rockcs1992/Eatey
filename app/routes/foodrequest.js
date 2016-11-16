@@ -8,6 +8,11 @@ var foodRequest_api = {};
 foodRequest_api.unsocketed = function(app) {
     app.post('/order/request', function(req, res) {
         res.Async(function *() {
+            try {
+                var decoded = jwt.verify(req.headers.authorization, 'secret');
+            }catch(err) {
+               res.status(401).json({m: U.C.UNAUTHORIZED});
+            }
         	if (!req.Verify('selectedRestaurantId selectedFood destination totalPrice waitingDuration tips')) {
                 req.BadRequest('Bad order request');
             }
@@ -19,11 +24,15 @@ foodRequest_api.unsocketed = function(app) {
             order.destination = req.body.destination;
             order.waitingDuration = req.body.waitingDuration;
             order.tips = req.body.tips;
+            order.orderer = decoded.username;
             order.expired = false;
 
             var new_order = yield FoodRequest.Create(order);
             requestCache.push(new_order);
             setTimeout(setExpire.bind(new_order),Number(new_order.waitingDuration)* 1000);
+          //  console.log(+new_order.created + new_order.waitingDuration * 1000);
+            new_order.expireAt = new Date(+new_order.created + new_order.waitingDuration * 1000).toLocaleTimeString();
+           
          	res.json(new_order);
         });
     }); 

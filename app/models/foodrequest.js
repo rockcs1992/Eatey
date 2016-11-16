@@ -11,7 +11,10 @@ var orderSchema = new mongoose.Schema({
 //	startTime : Date.now(),
 	orderer : String,
 	expired : Boolean,
-	completed : Boolean
+	completed : Boolean,
+	created: Date,
+	deliverer : String,
+	expireAt : String
 	
 	// orderType : String,    //   deliver/eat
 	// completed : Boolean,

@@ -30,6 +30,14 @@ export default class Confirmation extends React.Component {
 
     }
 
+    componentWillMount(){
+        let socket = io();
+        socket.emit('message','Confirmation message!');
+        socket.on('test',function(data){
+            console.log(data);
+        })
+    }
+
     handleReturn(){
         this.props.returnToLastStep();
     }
@@ -37,13 +45,18 @@ export default class Confirmation extends React.Component {
     componentWillUnmount(){
     //    alert('sending request!');
     //    var data = Object.assign(this.props.formData,{token : this.state.userToken});
-        axios.post('/api/order/request',this.props.formData)
-        .then(function(res){
-            console.log(res.data);
-        })
-        .catch(function(err){
-            console.log(err);
-        })
+        
+        if(localStorage.Eatey_userToken){
+            axios.defaults.headers.common.Authorization = localStorage.Eatey_userToken;
+            axios.post('/api/order/request',this.props.formData)
+            .then(function(res){
+                console.log(res.data);
+            })
+            .catch(function(err){
+                console.log(err);
+            })
+        }   
+        
     }
 
 	render() {
