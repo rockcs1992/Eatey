@@ -11,5 +11,16 @@
    
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5FnGTV3qGX4o2D9SVMTQ7j6-1EVXupbI" async defer></script>
     <script src="bundle.js" type="text/javascript"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+     var socket = io();
+    
+    socket.emit('message','Show the Message!!!');
+    socket.on('test',function(data){
+      console.log(data);
+    });
+       
+   
+    </script>
   </body>
 </html>
