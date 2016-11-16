@@ -33,6 +33,7 @@ export default class Orderitem extends React.Component {
             	<td>{order.waitingDuration}</td>
             	<td>{order.totalPrice}</td>
             	<td>{order.tips}</td>
+                <td><button>Take Order!</button></td>
             </tr>
         );
     }
