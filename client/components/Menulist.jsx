@@ -1,4 +1,5 @@
 import React from 'react';
+import {Button,Page} from 'react-onsenui';
 
 export default class Menulist extends React.Component {
     constructor(props) {
@@ -53,7 +54,7 @@ export default class Menulist extends React.Component {
 
     render() {
         var errorMessage = this.renderError();
-        return <div>
+        return <Page>
         			<h3>Please choose your meal</h3>
         			<table>
         				<thead>
@@ -72,9 +73,11 @@ export default class Menulist extends React.Component {
         			</table>
                     <h2>Total price:{this.state.totalprice}</h2>
                     {errorMessage}
-                    <button onClick={this.handleSubmit.bind(this)}>next</button>
-                    <button onClick={this.handleReturn.bind(this)}>previous</button>
-        	   </div>;
+                    <div style={{textAlign : 'center'}}>
+                        <Button onClick={() => this.handleReturn()}>previous</Button>
+                        <Button onClick={(event) => this.handleSubmit(event)}>next</Button>
+                    </div>
+        	   </Page>;
     }
 }
 

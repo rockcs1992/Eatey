@@ -1,4 +1,5 @@
 import React from 'react';
+import {Button, Toolbar,Page} from 'react-onsenui';
 
 export default class Restaurantlist extends React.Component {
     constructor(props) {
@@ -22,8 +23,15 @@ export default class Restaurantlist extends React.Component {
     		this.setState({error:false});
     		this.props.updateFormData({selectedRestaurantId:this.state.selected});
     	}
-    	
     }
+
+    renderToolbar() {
+        return (
+          <Toolbar>
+            <div className='center' style={{fontSize:'20px'}}>Please Choose A Restaurant</div>
+          </Toolbar>
+        );
+      }
 
     renderError() {
     	if(this.state.error) {
@@ -46,8 +54,7 @@ export default class Restaurantlist extends React.Component {
     
     render() {
         var errorMessage = this.renderError();
-    	return <div>
-    				<h3>Please choose one restaurant</h3>
+    	return <Page renderToolbar={this.renderToolbar}>
     				{errorMessage}
     				<form onSubmit={this.handleSubmit.bind(this)}>
     				{	
@@ -55,9 +62,9 @@ export default class Restaurantlist extends React.Component {
     						return this.renderRestaurant(restaurant);
     					})
     				}
-    					<input type="submit" value="next" /> 
     				</form>
-    		   </div>
+                <Button onClick={(event) => this.handleSubmit(event)}>Next</Button>
+    		   </Page>
     }
 }
 

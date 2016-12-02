@@ -7,20 +7,6 @@ export default class Orderitem extends React.Component {
       		counter : 0
       	};
     }
-
-    componentDidMount(){
-    	this.timer = setInterval(this.tick.bind(this),1000);
-	}
-
-	tick(){
-		this.setState({counter:++this.state.counter});
-		console.log(this.state.counter); 
-	}
-
-	componentWillUnmount(){
-		clearInterval(this.timer);
-	}
-
    
 
     render() {

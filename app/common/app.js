@@ -4,7 +4,6 @@ var mongoose       = require('mongoose');
 var bodyParser     = require('body-parser');
 var methodOverride = require('method-override');
 var U              = require('./utils');
-var session        = require('express-session');
 var path           = require('path');
 
 

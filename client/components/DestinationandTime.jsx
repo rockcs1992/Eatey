@@ -1,5 +1,6 @@
 import React from 'react';
 import Inputfield from './Inputfield.jsx';
+import {Button,Input} from 'react-onsenui';
 
 export default class DestinationandTime extends React.Component {
     constructor(props) {
@@ -63,8 +64,8 @@ export default class DestinationandTime extends React.Component {
                                     onChange={(event) => {this.handleChange(event,'waitingDuration')}}
                                     /></span>
                 {errorMessage}
-                <button onClick={this.handleSubmit.bind(this)}>next</button>
-                <button onClick={this.handleReturn.bind(this)}>previous</button>
+                <Button onClick={() => this.handleReturn()}>previous</Button>
+                <Button onClick={(event) => this.handleSubmit(event)}>next</Button>
         		</div>;
     }
 }

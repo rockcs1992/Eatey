@@ -6,6 +6,7 @@ import DestinationandTime from './DestinationandTime.jsx';
 import Confirmation from './Confirmation.jsx';
 import Success from './Success.jsx';
 import { Link } from 'react-router';
+import {Page} from 'react-onsenui';
 
 export default class Eatview extends React.Component {
 	constructor(){
@@ -87,11 +88,6 @@ export default class Eatview extends React.Component {
 	}
 
 	returnToLastStep(){
-		// var formData = this.state.formData;
-  //       for(let i = 0;i<arguments.length;i++){
-  //           console.log(arguments[i]);
-  //           delete formData[arguments[i]];
-  //       }
 		this.setState({currentStep : this.state.currentStep-1});
     }
 
@@ -108,24 +104,26 @@ export default class Eatview extends React.Component {
                         <button onClick={this.signOut.bind(this)}>SignOut!</button>
                     </div>
                     : <p>Please <Link to='/'>Login!</Link></p>;
-        return <div>
-                {title}
-                { (() => {
-                    switch(this.state.currentStep){
-                    	case 1 : return <Restaurantlist updateFormData={this.updateFormData.bind(this)} restaurants={this.state.restaurants} /> ;
-                    	case 2 : return <Menulist updateFormData={this.updateFormData.bind(this)} 
-                    							menu={this.state.restaurants[this.state.formData.selectedRestaurantId].menu}
-                    							returnToLastStep={this.returnToLastStep.bind(this)} />;
-                        case 3 : return <DestinationandTime updateFormData={this.updateFormData.bind(this)} 
+        return (
+                <Page>
+                    {title}
+                    { (() => {
+                        switch(this.state.currentStep){
+                        	case 1 : return <Restaurantlist updateFormData={this.updateFormData.bind(this)} restaurants={this.state.restaurants} /> ;
+                        	case 2 : return <Menulist updateFormData={this.updateFormData.bind(this)} 
+                        							menu={this.state.restaurants[this.state.formData.selectedRestaurantId].menu}
+                        							returnToLastStep={this.returnToLastStep.bind(this)} />;
+                            case 3 : return <DestinationandTime updateFormData={this.updateFormData.bind(this)} 
+                                                                returnToLastStep={this.returnToLastStep.bind(this)} />;
+                            case 4 : return <Tips updateFormData={this.updateFormData.bind(this)} 
+                                                    returnToLastStep={this.returnToLastStep.bind(this)} />;
+                            case 5 : return <Confirmation formData={this.state.formData} updateFormData={this.updateFormData.bind(this)} 
                                                             returnToLastStep={this.returnToLastStep.bind(this)} />;
-                        case 4 : return <Tips updateFormData={this.updateFormData.bind(this)} 
-                                                returnToLastStep={this.returnToLastStep.bind(this)} />;
-                        case 5 : return <Confirmation formData={this.state.formData} updateFormData={this.updateFormData.bind(this)} 
-                                                        returnToLastStep={this.returnToLastStep.bind(this)} />;
-                        case 6 : return <Success />
-                    }
-                })()}
-            </div>
+                            case 6 : return <Success />
+                        }
+                    })()}
+                </Page>
+            );
     }
 }
 

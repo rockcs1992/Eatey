@@ -1,4 +1,5 @@
 import React from 'react';
+import {Button,Input} from 'react-onsenui';
 
 // class Tipbutton extends React.Component {
 // 	render(){
@@ -36,15 +37,20 @@ export default class Tips extends React.Component {
     render() {
         return  <div>
         			<h2>Tips</h2>
-        			<button value='1' onClick={this.handleClick.bind(this)}>1</button>
-        			<button value='1.5' onClick={this.handleClick.bind(this)}>1.5</button>
-        			<button value='2' onClick={this.handleClick.bind(this)}>2</button>
-        			<button value='2.5' onClick={this.handleClick.bind(this)}>2.5</button>
+        			<Button onClick={(event) => this.handleClick(event)}>1.0</Button>
+                    <Button onClick={(event) => this.handleClick(event)}>1.5</Button>
+                    <Button onClick={(event) => this.handleClick(event)}>2.0</Button>
+                    <Button onClick={(event) => this.handleClick(event)}>2.5</Button>
         			<div>Custom Tip Amount : </div>
-        			<input type='text' value={this.state.inputvalue} onChange={this.handleChange.bind(this)} />
+                    <Input
+                        value={this.state.inputvalue}
+                        onChange={(event) => this.handleChange(event)}
+                        modifier='underbar'
+                        float
+                        placeholder='$' />
         			<h2>Tip Amount : {this.state.tips}</h2>
-        			<button onClick={this.handleSubmit.bind(this)}>next</button>
-                    <button onClick={this.handleReturn.bind(this)}>previous</button>
+        			<Button onClick={() => this.handleReturn()}>previous</Button>
+                    <Button onClick={(event) => this.handleSubmit(event)}>next</Button>
         		</div>;
     }
 }

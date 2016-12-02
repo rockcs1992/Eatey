@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import {Button} from 'react-onsenui';
 
 export default class Confirmation extends React.Component {
     constructor(props) {
@@ -63,11 +64,9 @@ export default class Confirmation extends React.Component {
 		var formData = this.showFinalForm(this.props.formData);
         return <div>
         		<h2>Confirm Your Order : </h2>
-        		<form onSubmit={this.handleSubmit.bind(this)}  >
-        			 {formData}
-        			<input type='submit'  />
-        		</form>
-                 <button onClick={this.handleReturn.bind(this)}>previous</button>
+        	    {formData}
+                <Button onClick={() => this.handleReturn()}>previous</Button>
+                <Button onClick={(event) => this.handleSubmit(event)}>Submit</Button>
         	   </div>;
     }
 }

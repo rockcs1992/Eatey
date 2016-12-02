@@ -3,6 +3,8 @@ import Inputfield from './Inputfield.jsx';
 import { Link } from 'react-router';
 import axios from 'axios';
 import { browserHistory } from 'react-router';
+import 'onsenui';
+import {Page, Input,Button,Toolbar} from 'react-onsenui';
 
 export default class Registerbox extends React.Component {
     constructor(props) {
@@ -17,6 +19,14 @@ export default class Registerbox extends React.Component {
         	confirmpassword : ''
 		};
     }
+
+    renderToolbar() {
+        return (
+          <Toolbar>
+            <div className='center'>My app</div>
+          </Toolbar>
+        );
+      }
 
     handleChange(event,item){
         event.preventDefault();
@@ -77,33 +87,59 @@ export default class Registerbox extends React.Component {
     }
 
     render() {
-    	var errorMessage = this.renderError();
-        return  <div id="register-box">
-        			<form onSubmit={this.handleSubmit.bind(this)}>
-						<Inputfield value={this.state.firstname} type="text"
-                                    onChange={(event) => {this.handleChange(event,'firstname')}}
-                                    placeholder="First Name"/>
-                        <Inputfield value={this.state.lastname} type="text"
-                                    onChange={(event) => {this.handleChange(event,'lastname')}}
-                                    placeholder="Last Name"/>
-                        <Inputfield value={this.state.username} type="text"
-                                    onChange={(event) => {this.handleChange(event,'username')}}
-                                    placeholder="Username"/>
-                        <Inputfield value={this.state.email} type="text"
-                                    onChange={(event) => {this.handleChange(event,'email')}}
-                                    placeholder="Email"/>
-                        <Inputfield value={this.state.password} type="password"
-                                    onChange={(event) => {this.handleChange(event,'password')}}
-                                    placeholder="Password"/>
-                        <Inputfield value={this.state.confirmpassword} type="password"
-                                    onChange={(event) => {this.handleChange(event,'confirmpassword')}}
-                                    placeholder="Confirm Password"/>
-                        <input type='submit' value="Register" />
-
-						<p>Already have an account?<Link to="/">Sign In!</Link></p>
-					</form>
-					{errorMessage}
-				</div>
+     	var errorMessage = this.renderError();
+        return (
+          <Page renderToolbar={this.renderToolbar}>
+            <section style={{textAlign: 'center',marginTop : '20%',padding:'50px'}}>
+              <p>
+                <Input
+                  value={this.state.firstname}
+                  onChange={(event) => this.handleChange(event,'firstname')}
+                  modifier='underbar'
+                  float
+                  placeholder='firstname' />
+              </p>
+              <p>
+                <Input
+                  value={this.state.lastname}
+                  onChange={ (event) => this.handleChange(event,'lastname')}
+                  modifier='underbar'
+                  float
+                  placeholder='lastname' />
+              </p>
+              <p>
+                <Input
+                  value={this.state.username}
+                  onChange={ (event) => this.handleChange(event,'username')}
+                  modifier='underbar'
+                  float
+                  placeholder='username' />
+              </p>
+              <p>
+                <Input
+                  value={this.state.email}
+                  onChange={ (event) => this.handleChange(event,'email')}
+                  modifier='underbar'
+                  float
+                  placeholder='email' />
+              </p>
+              <p>
+                <Input
+                  value={this.state.password}
+                  onChange={ (event) => this.handleChange(event,'password')}
+                  modifier='underbar'
+                  type='password'
+                  float
+                  placeholder='password' />
+              </p>
+              {errorMessage}
+              <p>
+                <Button onClick={(event) => this.handleSubmit(event)}>Sign Up!</Button>
+              </p>
+              <p>Already have an account? <Link to="/">Sign In!</Link></p>
+            </section>
+          </Page>
+        );
 					
     }
 }
